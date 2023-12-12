@@ -1,0 +1,534 @@
+{
+	"info": {
+		"_postman_id": "0a4bb482-6dba-4746-b60d-eeb7d0f97088",
+		"name": "算力融合-类脑云OS-模型推理与评测",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "模型训练",
+			"item": [
+				{
+					"name": "模型训练",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"jobName\": \"mnist-train-demo-1234\",\r\n    \"apiVersion\": \"2.0\",\r\n    \"kind\": \"training\",\r\n    \"capabilities\": [],\r\n    \"code\": {\r\n        \"kind\": \"nfs\",\r\n        \"mountSource\": {\r\n            \"path\": \"/projects/_2f1fe8d0df7a48f6b471e02e054b4852/mnist-train-demo/code\",\r\n            \"mountPath\": \"/code\"\r\n        }\r\n    },\r\n    \"datasets\": [\r\n        {\r\n            \"kind\": \"nfs\",\r\n            \"mountSource\": {\r\n                \"path\": \"/datasets/_2f1fe8d0df7a48f6b471e02e054b4852/MNIST\",\r\n                \"mountPath\": \"/data/PengchengYang/MNIST\"\r\n            }\r\n        }\r\n    ],\r\n    \"output\": {\r\n        \"kind\": \"nfs\",\r\n        \"mountSource\": {\r\n            \"path\": \"/projects/_2f1fe8d0df7a48f6b471e02e054b4852/mnist-train-demo/outputs/1\",\r\n            \"mountPath\": \"/output\"\r\n        }\r\n    },\r\n    \"models\": [],\r\n    \"envs\": {\r\n        \"key1\": \"value1\"\r\n    },\r\n    \"taskRoles\": [\r\n        {\r\n            \"cpuNumber\": 2,\r\n            \"memoryMB\": 16384,\r\n            \"image\": \"10.11.3.8:5000/bitahub/tensorflow-2.3-cuda-11.0-py3:v1.0\",\r\n            \"shmMB\": 8192,\r\n            \"taskRoleName\": \"task1\",\r\n            \"taskNumber\": 1,\r\n            \"command\": \"cd /code/dense-mnist-tf; python train.py --data-dir /data/PengchengYang/MNIST/mnist --output-dir /output/dense-mnist-tf;\",\r\n            \"accDevice\": {\r\n                \"kind\": \"gpu\",\r\n                \"requests\": 1,\r\n                \"deviceType\": \"gtx-1080-ti\"\r\n            }\r\n        }\r\n    ],\r\n    \"queue\": \"default\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{kubesphere}}/lapis/clusters/host/jobserver.leinao.ai/v1/workspaces/bitahub/namespaces/bita-user/jobs/mnist-train-demo-1234",
+							"protocol": "http",
+							"host": [
+								"{{kubesphere}}"
+							],
+							"path": [
+								"lapis",
+								"clusters",
+								"host",
+								"jobserver.leinao.ai",
+								"v1",
+								"workspaces",
+								"bitahub",
+								"namespaces",
+								"bita-user",
+								"jobs",
+								"mnist-train-demo-1234"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询模型训练",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{kubesphere}}/lapis/clusters/host/jobserver.leinao.ai/v1/workspaces/bitahub/namespaces/bita-user/jobs/mnist-eval-demo-12345",
+							"protocol": "http",
+							"host": [
+								"{{kubesphere}}"
+							],
+							"path": [
+								"lapis",
+								"clusters",
+								"host",
+								"jobserver.leinao.ai",
+								"v1",
+								"workspaces",
+								"bitahub",
+								"namespaces",
+								"bita-user",
+								"jobs",
+								"mnist-eval-demo-12345"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "删除模型训练",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{kubesphere}}/lapis/clusters/host/jobserver.leinao.ai/v1/workspaces/bitahub/namespaces/bita-user/jobs/mnist-eval-demo-12345",
+							"protocol": "http",
+							"host": [
+								"{{kubesphere}}"
+							],
+							"path": [
+								"lapis",
+								"clusters",
+								"host",
+								"jobserver.leinao.ai",
+								"v1",
+								"workspaces",
+								"bitahub",
+								"namespaces",
+								"bita-user",
+								"jobs",
+								"mnist-eval-demo-12345"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "离线推理",
+			"item": [
+				{
+					"name": "离线推理",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"jobName\": \"mnist-infer-demo-12345\",\r\n    \"apiVersion\": \"2.0\",\r\n    \"kind\": \"training\",\r\n    \"capabilities\": [],\r\n    \"code\": {\r\n        \"kind\": \"nfs\",\r\n        \"mountSource\": {\r\n            \"path\": \"/projects/_2f1fe8d0df7a48f6b471e02e054b4852/batch-inference-2022pclsys/mnist-infer-demo/code\",\r\n            \"mountPath\": \"/code\"\r\n        }\r\n    },\r\n    \"datasets\": [\r\n        {\r\n            \"kind\": \"nfs\",\r\n            \"mountSource\": {\r\n                \"path\": \"/datasets/_2f1fe8d0df7a48f6b471e02e054b4852/MNIST\",\r\n                \"mountPath\": \"/data/MNIST\"\r\n            }\r\n        }\r\n    ],\r\n    \"output\": {\r\n        \"kind\": \"nfs\",\r\n        \"mountSource\": {\r\n            \"path\": \"/projects/_2f1fe8d0df7a48f6b471e02e054b4852/batch-inference-2022pclsys/mnist-infer-demo/outputs/1\",\r\n            \"mountPath\": \"/output\"\r\n        }\r\n    },\r\n    \"models\": [\r\n        {\r\n            \"kind\": \"nfs\",\r\n            \"mountSource\": {\r\n                \"path\": \"/models/_2f1fe8d0df7a48f6b471e02e054b4852/dense-mnist-tf\",\r\n                \"mountPath\": \"/model/dense-mnist-tf\"\r\n            }\r\n        }\r\n    ],\r\n    \"envs\": {\r\n        \"key1\": \"value1\"\r\n    },\r\n    \"taskRoles\": [\r\n        {\r\n            \"cpuNumber\": 2,\r\n            \"memoryMB\": 16384,\r\n            \"image\": \"10.11.3.8:5000/bitahub/tensorflow-2.3-cuda-11.0-py3:v1.0\",\r\n            \"shmMB\": 8192,\r\n            \"taskRoleName\": \"task1\",\r\n            \"taskNumber\": 1,\r\n            \"command\": \"cd /code/dense-mnist-tf; python predict.py --model-dir /model/dense-mnist-tf/dense-mnist-tf --data-dir /data/MNIST/mnist --output-dir /output\",\r\n            \"accDevice\": {\r\n                \"kind\": \"gpu\",\r\n                \"requests\": 1,\r\n                \"deviceType\": \"gtx-1080-ti\"\r\n            }\r\n        }\r\n    ],\r\n    \"queue\": \"default\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{kubesphere}}/lapis/clusters/host/jobserver.leinao.ai/v1/workspaces/bitahub/namespaces/fusionhub-inference/jobs/mnist-infer-demo-12345",
+							"protocol": "http",
+							"host": [
+								"{{kubesphere}}"
+							],
+							"path": [
+								"lapis",
+								"clusters",
+								"host",
+								"jobserver.leinao.ai",
+								"v1",
+								"workspaces",
+								"bitahub",
+								"namespaces",
+								"fusionhub-inference",
+								"jobs",
+								"mnist-infer-demo-12345"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询离线推理",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{kubesphere}}/lapis/clusters/host/jobserver.leinao.ai/v1/workspaces/bitahub/namespaces/fusionhub-inference/jobs/mnist-eval-demo-12345",
+							"protocol": "http",
+							"host": [
+								"{{kubesphere}}"
+							],
+							"path": [
+								"lapis",
+								"clusters",
+								"host",
+								"jobserver.leinao.ai",
+								"v1",
+								"workspaces",
+								"bitahub",
+								"namespaces",
+								"fusionhub-inference",
+								"jobs",
+								"mnist-eval-demo-12345"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "删除离线推理",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{kubesphere}}/lapis/clusters/host/jobserver.leinao.ai/v1/workspaces/bitahub/namespaces/fusionhub-inference/jobs/mnist-eval-demo-12345",
+							"protocol": "http",
+							"host": [
+								"{{kubesphere}}"
+							],
+							"path": [
+								"lapis",
+								"clusters",
+								"host",
+								"jobserver.leinao.ai",
+								"v1",
+								"workspaces",
+								"bitahub",
+								"namespaces",
+								"fusionhub-inference",
+								"jobs",
+								"mnist-eval-demo-12345"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "推理结果评测",
+			"item": [
+				{
+					"name": "推理结果评测",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"jobName\": \"mnist-eval-demo-12345\",\r\n    \"apiVersion\": \"2.0\",\r\n    \"kind\": \"training\",\r\n    \"capabilities\": [],\r\n    \"code\": {\r\n        \"kind\": \"nfs\",\r\n        \"mountSource\": {\r\n            \"path\": \"/projects/_2f1fe8d0df7a48f6b471e02e054b4852/evaluation-2022pclsys/mnist-eval-demo/code\",\r\n            \"mountPath\": \"/code\"\r\n        }\r\n    },\r\n    \"datasets\": [\r\n        {\r\n            \"kind\": \"nfs\",\r\n            \"mountSource\": {\r\n                \"path\": \"/datasets/_2f1fe8d0df7a48f6b471e02e054b4852/MNIST\",\r\n                \"mountPath\": \"/data/MNIST\"\r\n            }\r\n        },\r\n        {\r\n            \"kind\": \"nfs\",\r\n            \"mountSource\": {\r\n                \"path\": \"/projects/_2f1fe8d0df7a48f6b471e02e054b4852/batch-inference-2022pclsys/mnist-infer-demo/output\",\r\n                \"mountPath\": \"/inference-output\"\r\n            }\r\n        }\r\n    ],\r\n    \"output\": {\r\n        \"kind\": \"nfs\",\r\n        \"mountSource\": {\r\n            \"path\": \"/projects/_2f1fe8d0df7a48f6b471e02e054b4852/evaluation-2022pclsys/mnist-eval-demo/output\",\r\n            \"mountPath\": \"/output\"\r\n        }\r\n    },\r\n    \"envs\": {\r\n        \"key1\": \"value1\"\r\n    },\r\n    \"taskRoles\": [\r\n        {\r\n            \"cpuNumber\": 2,\r\n            \"memoryMB\": 16384,\r\n            \"image\": \"10.11.3.8:5000/bitahub/tensorflow-2.3-cuda-11.0-py3:v1.0\",\r\n            \"shmMB\": 8192,\r\n            \"taskRoleName\": \"task1\",\r\n            \"taskNumber\": 1,\r\n            \"command\": \"cd /code/dense-mnist-tf; python evaluate.py --label-dir /data/MNIST/mnist --predictions /inference-output/prediction_results.npy --output-dir /output\"\r\n        }\r\n    ],\r\n    \"queue\": \"default\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{kubesphere}}/lapis/clusters/host/jobserver.leinao.ai/v1/workspaces/bitahub/namespaces/fusionhub-evaluation/jobs/mnist-eval-demo-12345",
+							"protocol": "http",
+							"host": [
+								"{{kubesphere}}"
+							],
+							"path": [
+								"lapis",
+								"clusters",
+								"host",
+								"jobserver.leinao.ai",
+								"v1",
+								"workspaces",
+								"bitahub",
+								"namespaces",
+								"fusionhub-evaluation",
+								"jobs",
+								"mnist-eval-demo-12345"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询推理结果评测",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{kubesphere}}/lapis/clusters/host/jobserver.leinao.ai/v1/workspaces/bitahub/namespaces/fusionhub-inference/jobs/mnist-eval-demo-12345",
+							"protocol": "http",
+							"host": [
+								"{{kubesphere}}"
+							],
+							"path": [
+								"lapis",
+								"clusters",
+								"host",
+								"jobserver.leinao.ai",
+								"v1",
+								"workspaces",
+								"bitahub",
+								"namespaces",
+								"fusionhub-inference",
+								"jobs",
+								"mnist-eval-demo-12345"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "删除推理结果评测",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{kubesphere}}/lapis/clusters/host/jobserver.leinao.ai/v1/workspaces/bitahub/namespaces/fusionhub-evaluation/jobs/mnist-eval-demo-12345",
+							"protocol": "http",
+							"host": [
+								"{{kubesphere}}"
+							],
+							"path": [
+								"lapis",
+								"clusters",
+								"host",
+								"jobserver.leinao.ai",
+								"v1",
+								"workspaces",
+								"bitahub",
+								"namespaces",
+								"fusionhub-evaluation",
+								"jobs",
+								"mnist-eval-demo-12345"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "在线推理服务",
+			"item": [
+				{
+					"name": "创建在线推理",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"ypc-mnist-serving-demo-1234\",\r\n    \"kind\": \"inference\",\r\n    \"model\": {\r\n        \"kind\": \"nfs\",\r\n        \"path\": \"/models/_2f1fe8d0df7a48f6b471e02e054b4852/dense-mnist-tf\",\r\n        \"mountPath\": \"/model/PengchengYang/dense-mnist-tf\"\r\n    },\r\n    \"code\": {\r\n        \"kind\": \"git\",\r\n        \"path\": \"git clone http://gitlab.bitahub.com/yangpengcheng/dense-mnist-tf.git\",\r\n        \"mountPath\" : \"/code\"\r\n    },\r\n    \"config\": null,\r\n    \"envs\": {\r\n        \"MODEL_PATH\": \"/model/PengchengYang/dense-mnist-tf/dense-mnist-tf\"\r\n    },\r\n    \"image\": \"registry.bitahub.com:5000/user-images/ypc-mnist-flask-serving:tf-2.4.3-gpu\",\r\n    \"replicas\": 1,\r\n    \"resource\": {\r\n        \"cpu\": 2,\r\n        \"memory\": 4096,\r\n        \"accDevice\": {\r\n            \"kind\": \"gpu\",\r\n            \"requests\": 1,\r\n            \"deviceType\": \"gtx-1080-ti\"\r\n        }\r\n    },\r\n    \"protocols\": [\r\n        {\r\n            \"kind\": \"http\",\r\n            \"port\": 5000\r\n        }\r\n    ],\r\n    \"commands\": [\r\n        \"cd /mnist-serving; python serving.py\"\r\n    ],\r\n    \"version\": \"v1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{kubesphere}}/lapis/inference.leinao.ai/v1/workspaces/bitahub/namespaces/fusionhub-serving/serving",
+							"protocol": "http",
+							"host": [
+								"{{kubesphere}}"
+							],
+							"path": [
+								"lapis",
+								"inference.leinao.ai",
+								"v1",
+								"workspaces",
+								"bitahub",
+								"namespaces",
+								"fusionhub-serving",
+								"serving"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "创建在线推理(允许跨域)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"mnist-serving-demo-cross-region-1234\",\r\n    \"kind\": \"inference\",\r\n    \"model\": {\r\n        \"kind\": \"nfs\",\r\n        \"path\": \"/models/_2f1fe8d0df7a48f6b471e02e054b4852/dense-mnist-tf\",\r\n        \"mountPath\": \"/model/PengchengYang/dense-mnist-tf\"\r\n    },\r\n    \"code\": null,\r\n    \"config\": null,\r\n    \"envs\": {\r\n        \"MODEL_PATH\": \"/model/PengchengYang/dense-mnist-tf/dense-mnist-tf\"\r\n    },\r\n    \"image\": \"registry.bitahub.com:5000/user-images/ypc-mnist-flask-serving:tf-2.4.3-gpu-cross-origin\",\r\n    \"replicas\": 1,\r\n    \"resource\": {\r\n        \"cpu\": 2,\r\n        \"memory\": 4096,\r\n        \"accDevice\": {\r\n            \"kind\": \"gpu\",\r\n            \"requests\": 1,\r\n            \"deviceType\": \"gtx-1080-ti\"\r\n        }\r\n    },\r\n    \"protocols\": [\r\n        {\r\n            \"kind\": \"http\",\r\n            \"port\": 5000\r\n        }\r\n    ],\r\n    \"commands\": [\r\n        \"cd /mnist-serving; python serving.py\"\r\n    ],\r\n    \"version\": \"v1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{kubesphere}}/lapis/inference.leinao.ai/v1/workspaces/bitahub/namespaces/fusionhub-serving/serving",
+							"protocol": "http",
+							"host": [
+								"{{kubesphere}}"
+							],
+							"path": [
+								"lapis",
+								"inference.leinao.ai",
+								"v1",
+								"workspaces",
+								"bitahub",
+								"namespaces",
+								"fusionhub-serving",
+								"serving"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询在线推理",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{kubesphere}}/lapis/inference.leinao.ai/v1/workspaces/bitahub/namespaces/fusionhub-serving/serving/mnist-serving-demo-1234",
+							"protocol": "http",
+							"host": [
+								"{{kubesphere}}"
+							],
+							"path": [
+								"lapis",
+								"inference.leinao.ai",
+								"v1",
+								"workspaces",
+								"bitahub",
+								"namespaces",
+								"fusionhub-serving",
+								"serving",
+								"mnist-serving-demo-1234"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "删除在线推理",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{kubesphere}}/lapis/inference.leinao.ai/v1/workspaces/bitahub/namespaces/inference/serving/mnist-serving-demo-12345",
+							"protocol": "http",
+							"host": [
+								"{{kubesphere}}"
+							],
+							"path": [
+								"lapis",
+								"inference.leinao.ai",
+								"v1",
+								"workspaces",
+								"bitahub",
+								"namespaces",
+								"inference",
+								"serving",
+								"mnist-serving-demo-12345"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "获取 kubesphere token",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"bitahub\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{kubesphere}}/auth/token",
+					"protocol": "http",
+					"host": [
+						"{{kubesphere}}"
+					],
+					"path": [
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "请求在线推理服务示例",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "apikey",
+						"value": "t50g39mV8dZDH7KPyW3e0hWcY5G7msJb",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "urls",
+							"value": "https://antsgroup.xyz/img-notebook/digit-7.png",
+							"type": "default"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://mnist-serving-demo-cross-region-1234-testinference.bitahub.com:10019/image",
+					"protocol": "http",
+					"host": [
+						"mnist-serving-demo-cross-region-1234-testinference",
+						"bitahub",
+						"com"
+					],
+					"port": "10019",
+					"path": [
+						"image"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJpdGFodWIiLCJ0b2tlbl90eXBlIjoiYWNjZXNzX3Rva2VuIiwiaWF0IjoxNjYzNDAxODMzLCJpc3MiOiJrdWJlc3BoZXJlIiwibmJmIjoxNjYzNDAxODMzfQ.lmJLGWUOI6mZ7SlZVlwhgbKJCaV6AkFh-9mNYgDrdxk",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
